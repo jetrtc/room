@@ -61,7 +61,7 @@ type sendMsg struct {
 
 func newRoom(logger log.Logger, callback roomCallback, id string) *room {
 	r := &room{
-		Loggable: log.Loggable{Logger: logger},
+		Loggable: log.NewLoggable(logger),
 		callback: callback,
 		id:       id,
 		users:    make(map[string]*roomUser),
@@ -212,7 +212,7 @@ type roomUser struct {
 func (u *roomUser) serve(ws *websocket.Conn) {
 	u.room.Infof("Websocket connected: %s", ws.RemoteAddr().String())
 	conn := &userConn{
-		Loggable:     log.Loggable{Logger: u.room},
+		Loggable:     log.NewLoggable(u.room),
 		user:         u,
 		ws:           ws,
 		timeout:      make(chan bool),

@@ -9,7 +9,7 @@ import (
 
 func NewService(logger log.Logger) *Service {
 	return &Service{
-		Loggable:   log.Loggable{Logger: logger},
+		Loggable:   log.NewLoggable(logger),
 		rooms:      make(map[string]*room),
 		timeouts:   make(map[string]*timeout),
 		addCh:      make(chan *addRoomAndUser),
