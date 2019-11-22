@@ -7,9 +7,9 @@ import (
 	"github.com/jetrtc/log"
 )
 
-func NewService(logger log.Logger) *Service {
+func NewService(log log.Sugar) *Service {
 	return &Service{
-		Loggable:   log.NewLoggable(logger),
+		Sugar:      log,
 		rooms:      make(map[string]*room),
 		timeouts:   make(map[string]*timeout),
 		addCh:      make(chan *addRoomAndUser),
@@ -20,7 +20,7 @@ func NewService(logger log.Logger) *Service {
 }
 
 type Service struct {
-	log.Loggable
+	log.Sugar
 	rooms      map[string]*room
 	timeouts   map[string]*timeout
 	addCh      chan *addRoomAndUser

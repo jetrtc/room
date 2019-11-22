@@ -22,7 +22,7 @@ type roomCallback interface {
 }
 
 type room struct {
-	log.Loggable
+	log.Sugar
 	id       string
 	callback roomCallback
 	users    map[string]*roomUser
@@ -59,9 +59,9 @@ type sendMsg struct {
 	body     interface{}
 }
 
-func newRoom(logger log.Logger, callback roomCallback, id string) *room {
+func newRoom(log log.Sugar, callback roomCallback, id string) *room {
 	r := &room{
-		Loggable: log.NewLoggable(logger),
+		Sugar:    log,
 		callback: callback,
 		id:       id,
 		users:    make(map[string]*roomUser),
@@ -212,7 +212,7 @@ type roomUser struct {
 func (u *roomUser) serve(ws *websocket.Conn) {
 	u.room.Infof("Websocket connected: %s", ws.RemoteAddr().String())
 	conn := &userConn{
-		Loggable:     log.NewLoggable(u.room),
+		Sugar:        u.room,
 		user:         u,
 		ws:           ws,
 		timeout:      make(chan bool),
@@ -233,7 +233,7 @@ type eventMessage struct {
 }
 
 type userConn struct {
-	log.Loggable
+	log.Sugar
 	user         *roomUser
 	seq          int
 	ws           *websocket.Conn
